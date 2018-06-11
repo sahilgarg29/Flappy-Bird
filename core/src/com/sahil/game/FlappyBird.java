@@ -17,8 +17,7 @@ public class FlappyBird extends ApplicationAdapter {
 
 	private GameStateManager gsm;
 	private SpriteBatch batch;
-	Texture img;
-	
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();

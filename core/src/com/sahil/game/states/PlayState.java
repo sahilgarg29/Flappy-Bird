@@ -4,42 +4,45 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sahil.game.FlappyBird;
+import com.sahil.game.sprites.Bird;
 
-public class MenuState extends State {
 
+public class PlayState extends State {
+
+    private Bird bird;
     private Texture background;
-    private Texture playBtn;
 
-    public MenuState(GameStateManager gsm) {
+    public PlayState(GameStateManager gsm) {
         super(gsm);
+        bird = new Bird(50, 300);
         background = new Texture("bg.png");
-        playBtn = new Texture("playbtn.png");
+        cam.setToOrtho(false, FlappyBird.WIDTH/2, FlappyBird.HEIGHT/2);
     }
 
     @Override
     public void handleInput() {
         if(Gdx.input.justTouched()){
-            gsm.set(new PlayState(gsm));
-            dispose();
+            bird.jump();
         }
     }
 
     @Override
     public void update(float dt) {
         handleInput();
+        bird.update(dt);
     }
 
     @Override
     public void render(SpriteBatch sb) {
+        sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        sb.draw(background, 0,0, FlappyBird.WIDTH, FlappyBird.HEIGHT);
-        sb.draw(playBtn, (FlappyBird.WIDTH /2) - (playBtn.getWidth()/2), FlappyBird.HEIGHT/2);
+        sb.draw(background, cam.position.x - (cam.viewportWidth/2), 0);
+        sb.draw(bird.getBird(), bird.getPosition().x, bird.getPosition().y);
         sb.end();
     }
 
     @Override
     public void dispose() {
-        background.dispose();
-        playBtn.dispose();
+
     }
 }
